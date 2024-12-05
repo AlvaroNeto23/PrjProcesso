@@ -1,0 +1,35 @@
+﻿@model PrjProcesso.ViewModels.ProcessoViewModel
+
+@{
+    ViewData["Title"] = "Detalhes do Processo";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div>
+    <h4>Processo</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">Nome do Processo</dt>
+        <dd class="col-sm-10">@Model.NomeProcesso</dd>
+
+        <dt class="col-sm-2">NPU</dt>
+        <dd class="col-sm-10">@Model.NPU</dd>
+
+        <dt class="col-sm-2">Data de Cadastro</dt>
+        <dd class="col-sm-10">@Model.DataCadastro.ToString("dd/MM/yyyy")</dd>
+
+        <dt class="col-sm-2">Data de Visualização</dt>
+        <dd class="col-sm-10">@Model.DataVisualizacao?.ToString("dd/MM/yyyy")</dd>
+
+        <dt class="col-sm-2">UF</dt>
+        <dd class="col-sm-10">@Model.UF</dd>
+
+        <dt class="col-sm-2">Município</dt>
+        <dd class="col-sm-10">@Model.Municipio</dd>
+    </dl>
+</div>
+
+<p>
+    <a asp-action="Index" class="btn btn-primary">Voltar</a>
+</p>

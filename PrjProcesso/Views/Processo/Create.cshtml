@@ -1,0 +1,71 @@
+﻿@model PrjProcesso.ViewModels.ProcessoViewModel
+
+@{
+    ViewData["Title"] = "Criar Processo";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h4>Processo</h4>
+<hr />
+<div>
+    <form asp-action="Create" method="post">
+        <div class="form-group">
+            <label asp-for="NomeProcesso"></label>
+            <input asp-for="NomeProcesso" class="form-control" />
+            <span asp-validation-for="NomeProcesso" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="NPU"></label>
+            <input asp-for="NPU" class="form-control" id="NPU" />
+            <span asp-validation-for="NPU" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="UF"></label>
+            <select asp-for="UF" class="form-control" id="UF">
+                <option value="">Selecione o estado</option>
+            </select>
+            <span asp-validation-for="UF" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Municipio"></label>
+            <input asp-for="Municipio" class="form-control" maxlength="300" />
+            <span asp-validation-for="Municipio" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Salvar</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    </form>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            //Máscara do campo NPU
+            $('#NPU').mask('0000000-00.0000.0.00.0000');
+
+            //Usando requisição Ajax para preencher o DropDown Estado
+            $.ajax({
+                url: 'https://servicodados.ibge.gov.br/api/v1/localidades/estados',
+                method: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                data.sort((a, b) => a.nome.localeCompare(b.nome));
+
+                //Dropdown
+                data.forEach(function (estado) {
+                    $('#UF').append(new Option(estado.nome, estado.sigla));
+                });
+                },
+                error: function () {
+                    alert('Erro ao carregar os estados. Tente novamente.');
+                }
+            });
+        });
+    </script>
+
+</div>
