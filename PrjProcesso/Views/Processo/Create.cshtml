@@ -15,21 +15,22 @@
             <input asp-for="NomeProcesso" class="form-control" />
             <span asp-validation-for="NomeProcesso" class="text-danger"></span>
         </div>
-
         <div class="form-group">
             <label asp-for="NPU"></label>
             <input asp-for="NPU" class="form-control" id="NPU" />
             <span asp-validation-for="NPU" class="text-danger"></span>
         </div>
-
         <div class="form-group">
             <label asp-for="UF"></label>
-            <select asp-for="UF" class="form-control" id="UF">
+            <select asp-for="UF" class="form-control">
                 <option value="">Selecione o estado</option>
+                @foreach (var estado in ViewBag.Estados)
+                {
+                    <option value="@estado.sigla">@estado.nome</option>
+                }
             </select>
             <span asp-validation-for="UF" class="text-danger"></span>
         </div>
-
         <div class="form-group">
             <label asp-for="Municipio"></label>
             <input asp-for="Municipio" class="form-control" maxlength="300" />
@@ -44,28 +45,8 @@
 
     <script>
         $(document).ready(function () {
-
-            //Máscara do campo NPU
+            //Máscara NPU
             $('#NPU').mask('0000000-00.0000.0.00.0000');
-
-            //Usando requisição Ajax para preencher o DropDown Estado
-            $.ajax({
-                url: 'https://servicodados.ibge.gov.br/api/v1/localidades/estados',
-                method: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                data.sort((a, b) => a.nome.localeCompare(b.nome));
-
-                //Dropdown
-                data.forEach(function (estado) {
-                    $('#UF').append(new Option(estado.nome, estado.sigla));
-                });
-                },
-                error: function () {
-                    alert('Erro ao carregar os estados. Tente novamente.');
-                }
-            });
         });
     </script>
-
 </div>

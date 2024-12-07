@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PrjProcesso.ViewModels;
 using PrjProcesso.Models;
 using PrjProcesso.Repositories.Interfaces;
+using PrjProcesso.ViewModels.QueryViewModel;
 
 namespace PrjProcesso.Controllers
 {
@@ -56,9 +57,19 @@ namespace PrjProcesso.Controllers
             return View(viewModel);
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var estados = await GetEstados();
+            ViewBag.Estados = estados;
             return View();
+        }
+
+        private async Task<List<EstadoViewModel>> GetEstados()
+        {
+            var client = new HttpClient();
+            var response = await client.GetStringAsync("https://servicodados.ibge.gov.br/api/v1/localidades/estados");
+            var estados = JsonSerializer.Deserialize<List<EstadoViewModel>>(response);
+            return estados.OrderBy(e => e.nome).ToList(); //Ordenando por nome
         }
 
         [HttpPost]
